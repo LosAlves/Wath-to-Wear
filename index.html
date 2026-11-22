@@ -18,7 +18,7 @@
 *,*::before,*::after{box-sizing:inherit}
 html,body{margin:0}
 body{background:var(--bg);color:var(--ink);font-family:Verdana,"Atkinson Hyperlegible",Arial,sans-serif;font-size:22px;line-height:1.3}
-main{max-width:640px;margin:0 auto;padding:16px 16px 40px;text-align:center}
+main{position:relative;z-index:1;max-width:640px;margin:0 auto;padding:16px 16px 40px;text-align:center}
 h1{font-size:2.2rem;line-height:1.15;margin:8px 0 18px}
 button{font:inherit;color:inherit;cursor:pointer}
 button:focus-visible{outline:6px solid var(--sun);outline-offset:3px}
@@ -70,9 +70,60 @@ button:focus-visible{outline:6px solid var(--sun);outline-offset:3px}
   .spin{animation:bob 1.2s ease-in-out infinite}
   @keyframes bob{50%{transform:translateY(-10px)}}
 }
+
+/* ---- animated weather background ---- */
+#bg{position:fixed;inset:0;overflow:hidden;z-index:0;pointer-events:none;background:linear-gradient(180deg,var(--g1),var(--g2))}
+.scene-home{--g1:#8fd3ff;--g2:#fff1c1}
+.scene-sunny{--g1:#5fbfff;--g2:#fff0b0}
+.scene-cloudy{--g1:#b4c3d2;--g2:#e8edf2}
+.scene-rainy{--g1:#8aa2b9;--g2:#cdd9e4}
+.scene-snowy{--g1:#c6e3ff;--g2:#ffffff}
+@media (prefers-color-scheme: dark){
+  .scene-home{--g1:#14407a;--g2:#0b1b2e}
+  .scene-sunny{--g1:#1d5b99;--g2:#0e2238}
+  .scene-cloudy{--g1:#2f3f50;--g2:#0e1a28}
+  .scene-rainy{--g1:#1b2c40;--g2:#0b1522}
+  .scene-snowy{--g1:#2b4a6d;--g2:#122338}
+}
+.sunwrap{position:absolute;top:5%;right:6%;width:120px;height:120px}
+.rays{position:absolute;inset:-55px;border-radius:50%;background:repeating-conic-gradient(rgba(255,214,74,.6) 0 7deg,transparent 7deg 24deg);-webkit-mask-image:radial-gradient(circle,transparent 36%,#000 38%,#000 62%,transparent 70%);mask-image:radial-gradient(circle,transparent 36%,#000 38%,#000 62%,transparent 70%)}
+.sun{position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 40% 38%,#fff8c4 0%,#ffd84a 55%,#ffb300 100%);box-shadow:0 0 50px 16px rgba(255,214,74,.5)}
+.cloud{position:absolute;left:-200px;width:120px;height:40px;background:#fff;border-radius:40px}
+.cloud::before,.cloud::after{content:"";position:absolute;background:#fff;border-radius:50%}
+.cloud::before{width:52px;height:52px;top:-26px;left:18px}
+.cloud::after{width:68px;height:68px;top:-36px;left:52px}
+.scene-rainy .cloud,.scene-rainy .cloud::before,.scene-rainy .cloud::after{background:#6f859b}
+@media (prefers-color-scheme: dark){
+  .cloud,.cloud::before,.cloud::after{background:#8fa3b8}
+  .scene-rainy .cloud,.scene-rainy .cloud::before,.scene-rainy .cloud::after{background:#42566b}
+}
+.drop{position:absolute;width:2px;height:18px;border-radius:2px;background:linear-gradient(rgba(74,120,168,0),#4a78a8);opacity:.75}
+.flake{position:absolute;color:#fff;text-shadow:0 0 5px rgba(40,70,110,.45);line-height:1}
+.floater{position:absolute;font-size:2.6rem;opacity:.9}
+.hero{display:flex;justify-content:center;gap:14px;font-size:3.4rem;line-height:1;margin:4px 0 6px}
+@media (prefers-reduced-motion: no-preference){
+  .rays{animation:spin 50s linear infinite}
+  .sun{animation:pulse 4s ease-in-out infinite}
+  .cloud{animation:drift linear infinite}
+  .drop,.flake{animation:fall linear infinite}
+  .flake{animation:fall linear infinite,sway ease-in-out infinite alternate}
+  .floater{animation:floaty 6s ease-in-out infinite}
+  .hero span{display:inline-block;animation:bob 2.4s ease-in-out infinite}
+  .hero span:nth-child(2){animation-delay:.3s}.hero span:nth-child(3){animation-delay:.6s}.hero span:nth-child(4){animation-delay:.9s}
+  .stack .choice{animation:breathe 3s ease-in-out infinite}
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulse{50%{transform:scale(1.07)}}
+@keyframes drift{from{left:-220px}to{left:105%}}
+@keyframes fall{from{top:-8%}to{top:106%}}
+@keyframes sway{from{margin-left:-14px}to{margin-left:14px}}
+@keyframes floaty{0%,100%{transform:translateY(0) rotate(-5deg)}50%{transform:translateY(-22px) rotate(5deg)}}
+@keyframes bob{50%{transform:translateY(-12px)}}
+@keyframes breathe{50%{transform:scale(1.03)}}
 </style>
 </head>
 <body>
+<div id="bg" aria-hidden="true"></div>
 <main id="app"></main>
 <script>
 (function(){
@@ -241,6 +292,44 @@ button:focus-visible{outline:6px solid var(--sun);outline-offset:3px}
   }
   function I(i,k){return {i:i,k:k}}
   function el(tag,cls,html){var e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e}
+  function rnd(a,b){return a+Math.random()*(b-a)}
+  function piece(cls,style,html){
+    var e=document.createElement("div");e.className=cls;
+    if(style)e.setAttribute("style",style);
+    if(html)e.innerHTML=html;
+    return e;
+  }
+  var curScene=null;
+  function setScene(name){
+    var bg=document.getElementById("bg");
+    if(!bg||curScene===name)return;
+    curScene=name;bg.className="scene-"+name;bg.innerHTML="";
+    function cloud(y,scale,dur,delay,op){
+      bg.appendChild(piece("cloud","top:"+y+"%;left:"+rnd(-5,90).toFixed(0)+"%;transform:scale("+scale+");opacity:"+op+";animation-duration:"+dur+"s;animation-delay:-"+delay+"s"));
+    }
+    function sun(){var w=piece("sunwrap");w.appendChild(piece("rays"));w.appendChild(piece("sun"));bg.appendChild(w)}
+    var n;
+    if(name==="sunny"){
+      sun();cloud(20,.8,70,10,.95);cloud(36,1.1,95,45,.85);cloud(12,.6,120,80,.8);
+    }else if(name==="cloudy"){
+      [8,18,30,42,56].forEach(function(y){cloud(y,rnd(.8,1.4).toFixed(2),rnd(60,110).toFixed(0),rnd(0,100).toFixed(0),.9)});
+    }else if(name==="rainy"){
+      cloud(4,1.3,90,20,.95);cloud(14,1.6,120,70,.9);
+      for(n=0;n<36;n++){
+        bg.appendChild(piece("drop","left:"+rnd(0,100).toFixed(1)+"%;top:"+rnd(0,100).toFixed(0)+"%;height:"+rnd(12,24).toFixed(0)+"px;animation-duration:"+rnd(.7,1.4).toFixed(2)+"s;animation-delay:-"+rnd(0,1.4).toFixed(2)+"s"));
+      }
+    }else if(name==="snowy"){
+      cloud(3,1.4,130,40,.85);
+      for(n=0;n<30;n++){
+        bg.appendChild(piece("flake","left:"+rnd(0,100).toFixed(1)+"%;top:"+rnd(0,100).toFixed(0)+"%;font-size:"+rnd(12,28).toFixed(0)+"px;opacity:"+rnd(.6,1).toFixed(2)+";animation-duration:"+rnd(7,13).toFixed(1)+"s,"+rnd(2,4).toFixed(1)+"s;animation-delay:-"+rnd(0,12).toFixed(1)+"s,0s","❄"));
+      }
+    }else{
+      sun();cloud(24,.9,80,12,.9);cloud(44,.7,110,60,.8);
+      [["🌈",8,64],["🌧️",70,70],["❄️",22,80],["💨",52,58],["☁️",84,48]].forEach(function(f,k){
+        bg.appendChild(piece("floater","left:"+f[1]+"%;top:"+f[2]+"%;animation-delay:-"+(k*1.1).toFixed(1)+"s",f[0]));
+      });
+    }
+  }
   function emoji(list,k){for(var n=0;n<list.length;n++)if(list[n][0]===k)return list[n][1]}
 
   function skyFromCode(c){
@@ -335,6 +424,7 @@ button:focus-visible{outline:6px solid var(--sun);outline-offset:3px}
   function render(){
     var L=t();
     stopSpeech();
+    setScene((st.step==="check"||st.step==="suggest"||st.step==="dress")&&st.sky?st.sky:"home");
     document.documentElement.lang=(lang==="pt"?"pt-PT":lang);
     app.innerHTML="";
     app.className=muted?"muted":"";
@@ -420,6 +510,7 @@ button:focus-visible{outline:6px solid var(--sun);outline-offset:3px}
       again.onclick=load;rr.appendChild(again);app.appendChild(rr);
     }
     else if(st.step==="start"){
+      app.appendChild(el("div","hero",'<span>☀️</span><span>☁️</span><span>🌧️</span><span>❄️</span>'));
       header(L.startQ);
       dayToggle(L);
       var sg=el("div","stack");
