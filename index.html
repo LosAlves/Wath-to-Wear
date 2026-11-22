@@ -41,6 +41,8 @@ button:focus-visible{outline:6px solid var(--sun);outline-offset:3px}
 .top{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px;margin-bottom:6px}
 .langsel{font:inherit;font-weight:700;font-size:1rem;min-height:48px;padding:4px 12px;border:3px solid var(--ink);border-radius:999px;background:var(--card);color:var(--ink);max-width:60vw}
 .unit{display:flex;gap:8px}
+.holdcard,.holdcard *{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}
+.holdcard *{pointer-events:none}
 .daytog{justify-content:center;margin:0 0 14px}
 .daytog .small{min-height:56px;font-size:1.2rem;padding:6px 24px}
 .lang[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
@@ -107,7 +109,7 @@ button:focus-visible{outline:6px solid var(--sun);outline-offset:3px}
       loading:"Looking at the weather…", today:"Today’s weather",
       go:"👕 Let’s get dressed", listen:"🔊 Listen", notright:"✏️ Not right?",
       skyQ:"Look outside. What is the sky like?", feelQ:"How does it feel outside?",
-      back:"⬅️ Back", pickTop:"Choose your top", pickBottom:"Choose your trousers", pickShoes:"Choose your shoes", tempQ:"Look at the thermometer. Tap the temperature.", deg:"degrees", voice:"Change voice", startQ:"What should I wear today?", mute:"Mute the voice", autoLang:"Automatic (device language)", langLabel:"Language", unmute:"Turn the voice on", autoBtn:"Weather", suggestQ:"Today’s outfit", suggestSay:"I suggest: ", dayToday:"Today", dayTomorrow:"Tomorrow", suggestQTom:"Tomorrow’s outfit", todayTom:"Tomorrow’s weather", sentenceTom:function(s,f){return "Tomorrow it will be "+s+" and "+f+"."}, seeOutfit:"👀 See my outfit", manualBtn:"I choose the temperature", errDenied:"Location is blocked. On iPad or iPhone: Settings → Privacy & Security → Location Services → Safari Websites → While Using. Then tap Check weather.", errOther:"Could not get the weather. Check the internet connection, then tap Check weather.", sample:"Hello! Today we choose our clothes.", check:"🌍 Check weather", put:"Put on: ", did:"✓ I put it on",
+      back:"⬅️ Back", pickTop:"Choose your top", pickBottom:"Choose your trousers", pickShoes:"Choose your shoes", tempQ:"Look at the thermometer. Tap the temperature.", deg:"degrees", voice:"Change voice", startQ:"What should I wear today?", mute:"Mute the voice", autoLang:"Automatic (device language)", langLabel:"Language", unmute:"Turn the voice on", autoBtn:"Weather", home:"🏠 Home", suggestQ:"Today’s outfit", suggestSay:"I suggest: ", dayToday:"Today", dayTomorrow:"Tomorrow", suggestQTom:"Tomorrow’s outfit", todayTom:"Tomorrow’s weather", sentenceTom:function(s,f){return "Tomorrow it will be "+s+" and "+f+"."}, seeOutfit:"👀 See my outfit", manualBtn:"I choose the temperature", errDenied:"Location is blocked. On iPad or iPhone: Settings → Privacy & Security → Location Services → Safari Websites → While Using. Then tap Check weather.", errOther:"Could not get the weather. Check the internet connection, then tap Check weather.", sample:"Hello! Today we choose our clothes.", check:"🌍 Check weather", put:"Put on: ", did:"✓ I put it on",
       done:"All done! Have a nice day!", again:"Start again",
       sentence:function(s,f){return "Today it is "+s+" and "+f+"."},
       sky:{sunny:["Sunny","sunny"],cloudy:["Cloudy","cloudy"],rainy:["Rain","rainy"],snowy:["Snow","snowy"]},
@@ -121,7 +123,7 @@ button:focus-visible{outline:6px solid var(--sun);outline-offset:3px}
       loading:"Je regarde la météo…", today:"La météo d’aujourd’hui",
       go:"👕 On s’habille", listen:"🔊 Écouter", notright:"✏️ Ce n’est pas ça"+N+"?",
       skyQ:"Regarde dehors. Comment est le ciel"+N+"?", feelQ:"Il fait comment dehors"+N+"?",
-      back:"⬅️ Retour", pickTop:"Choisis ton haut", pickBottom:"Choisis ton bas", pickShoes:"Choisis tes chaussures", tempQ:"Regarde le thermomètre. Touche la température.", deg:"degrés", voice:"Changer de voix", startQ:"Que dois-je porter aujourd’hui"+N+"?", mute:"Couper la voix", autoLang:"Automatique (langue de l’appareil)", langLabel:"Langue", unmute:"Activer la voix", autoBtn:"Météo", suggestQ:"Ta tenue du jour", suggestSay:"Je te propose"+N+": ", dayToday:"Aujourd’hui", dayTomorrow:"Demain", suggestQTom:"Ta tenue de demain", todayTom:"La météo de demain", sentenceTom:function(s,f){return "Demain, le temps sera "+s+" et il fera "+f+"."}, seeOutfit:"👀 Voir ma tenue", manualBtn:"Je choisis la température", errDenied:"La localisation est bloquée. Sur iPad ou iPhone : Réglages → Confidentialité et sécurité → Service de localisation → Sites web Safari → Lors de l’utilisation. Puis touchez Voir la météo.", errOther:"Impossible d’obtenir la météo. Vérifiez la connexion internet, puis touchez Voir la météo.", sample:"Bonjour ! On choisit nos habits.", check:"🌍 Voir la météo", put:"Mets"+N+": ", did:"✓ Je l’ai mis",
+      back:"⬅️ Retour", pickTop:"Choisis ton haut", pickBottom:"Choisis ton bas", pickShoes:"Choisis tes chaussures", tempQ:"Regarde le thermomètre. Touche la température.", deg:"degrés", voice:"Changer de voix", startQ:"Que dois-je porter aujourd’hui"+N+"?", mute:"Couper la voix", autoLang:"Automatique (langue de l’appareil)", langLabel:"Langue", unmute:"Activer la voix", autoBtn:"Météo", home:"🏠 Accueil", suggestQ:"Ta tenue du jour", suggestSay:"Je te propose"+N+": ", dayToday:"Aujourd’hui", dayTomorrow:"Demain", suggestQTom:"Ta tenue de demain", todayTom:"La météo de demain", sentenceTom:function(s,f){return "Demain, le temps sera "+s+" et il fera "+f+"."}, seeOutfit:"👀 Voir ma tenue", manualBtn:"Je choisis la température", errDenied:"La localisation est bloquée. Sur iPad ou iPhone : Réglages → Confidentialité et sécurité → Service de localisation → Sites web Safari → Lors de l’utilisation. Puis touchez Voir la météo.", errOther:"Impossible d’obtenir la météo. Vérifiez la connexion internet, puis touchez Voir la météo.", sample:"Bonjour ! On choisit nos habits.", check:"🌍 Voir la météo", put:"Mets"+N+": ", did:"✓ Je l’ai mis",
       done:"Terminé"+N+"! Bonne journée"+N+"!", again:"Recommencer",
       sentence:function(s,f){return "Aujourd’hui, le temps est "+s+" et il fait "+f+"."},
       sky:{sunny:["Soleil","ensoleillé"],cloudy:["Nuages","nuageux"],rainy:["Pluie","pluvieux"],snowy:["Neige","neigeux"]},
@@ -135,7 +137,7 @@ button:focus-visible{outline:6px solid var(--sun);outline-offset:3px}
       loading:"A ver o tempo…", today:"O tempo de hoje",
       go:"👕 Vamos vestir-nos", listen:"🔊 Ouvir", notright:"✏️ Não é isto?",
       skyQ:"Olha lá para fora. Como está o céu?", feelQ:"Como está lá fora?",
-      back:"⬅️ Voltar", pickTop:"Escolhe a parte de cima", pickBottom:"Escolhe as calças", pickShoes:"Escolhe o calçado", tempQ:"Olha para o termómetro. Toca na temperatura.", deg:"graus", voice:"Mudar de voz", startQ:"O que vou vestir hoje?", mute:"Silenciar a voz", autoLang:"Automático (idioma do dispositivo)", langLabel:"Idioma", unmute:"Ativar a voz", autoBtn:"Tempo", suggestQ:"A roupa de hoje", suggestSay:"Sugiro: ", dayToday:"Hoje", dayTomorrow:"Amanhã", suggestQTom:"A roupa de amanhã", todayTom:"O tempo de amanhã", sentenceTom:function(s,f){return "Amanhã "+s+" e "+f+"."}, seeOutfit:"👀 Ver a minha roupa", manualBtn:"Eu escolho a temperatura", errDenied:"A localização está bloqueada. No iPad ou iPhone: Definições → Privacidade e segurança → Serviços de localização → Sites do Safari → Enquanto usa a app. Depois toca em Ver o tempo.", errOther:"Não foi possível obter o tempo. Verifica a ligação à internet e depois toca em Ver o tempo.", sample:"Olá! Hoje vamos escolher a roupa.", check:"🌍 Ver o tempo", put:"Veste: ", did:"✓ Já vesti",
+      back:"⬅️ Voltar", pickTop:"Escolhe a parte de cima", pickBottom:"Escolhe as calças", pickShoes:"Escolhe o calçado", tempQ:"Olha para o termómetro. Toca na temperatura.", deg:"graus", voice:"Mudar de voz", startQ:"O que vou vestir hoje?", mute:"Silenciar a voz", autoLang:"Automático (idioma do dispositivo)", langLabel:"Idioma", unmute:"Ativar a voz", autoBtn:"Tempo", home:"🏠 Início", suggestQ:"A roupa de hoje", suggestSay:"Sugiro: ", dayToday:"Hoje", dayTomorrow:"Amanhã", suggestQTom:"A roupa de amanhã", todayTom:"O tempo de amanhã", sentenceTom:function(s,f){return "Amanhã "+s+" e "+f+"."}, seeOutfit:"👀 Ver a minha roupa", manualBtn:"Eu escolho a temperatura", errDenied:"A localização está bloqueada. No iPad ou iPhone: Definições → Privacidade e segurança → Serviços de localização → Sites do Safari → Enquanto usa a app. Depois toca em Ver o tempo.", errOther:"Não foi possível obter o tempo. Verifica a ligação à internet e depois toca em Ver o tempo.", sample:"Olá! Hoje vamos escolher a roupa.", check:"🌍 Ver o tempo", put:"Veste: ", did:"✓ Já vesti",
       done:"Pronto! Tem um bom dia!", again:"Recomeçar",
       sentence:function(s,f){return "Hoje "+s+" e "+f+"."},
       sky:{sunny:["Sol","faz sol"],cloudy:["Nuvens","está nublado"],rainy:["Chuva","está a chover"],snowy:["Neve","está a nevar"]},
@@ -380,13 +382,15 @@ button:focus-visible{outline:6px solid var(--sun);outline-offset:3px}
     else if(st.step==="check"){
       var txt=(st.day==="tomorrow"?L.sentenceTom:L.sentence)(L.sky[st.sky][1],L.feel[st.feel][1]);
       app.appendChild(el("h1",null,st.day==="tomorrow"?L.todayTom:L.today));
-      var wc=el("div","card",'<span class="pair"><span class="ic" aria-hidden="true">'+emoji(SKY,st.sky)+'</span><span class="ic" aria-hidden="true">'+emoji(FEEL,st.feel)+'</span></span><span class="lbl">'+fmt(st.temp)+'°'+unit+'</span>');
+      var wc=el("div","card holdcard",'<span class="pair"><span class="ic" aria-hidden="true">'+emoji(SKY,st.sky)+'</span><span class="ic" aria-hidden="true">'+emoji(FEEL,st.feel)+'</span></span><span class="lbl">'+fmt(st.temp)+'°'+unit+'</span>');
       /*LIVE*/(function(){
         var tm=null;
         function stop(){if(tm){clearTimeout(tm);tm=null}}
-        wc.addEventListener("pointerdown",function(){stop();tm=setTimeout(function(){tm=null;st.auto=false;st.err=null;st.step="temp";render()},1500)});
-        ["pointerup","pointerleave","pointercancel"].forEach(function(ev){wc.addEventListener(ev,stop)});
-        wc.addEventListener("contextmenu",function(e){e.preventDefault()});
+        function start(){stop();tm=setTimeout(function(){tm=null;st.auto=false;st.err=null;st.step="temp";render()},1500)}
+        wc.addEventListener("pointerdown",start);
+        wc.addEventListener("touchstart",start,{passive:true});
+        ["pointerup","pointerleave","pointercancel","touchend","touchcancel"].forEach(function(ev){wc.addEventListener(ev,stop)});
+        ["contextmenu","selectstart","dragstart"].forEach(function(ev){wc.addEventListener(ev,function(e){e.preventDefault()})});
         wc.style.webkitTouchCallout="none";wc.style.userSelect="none";wc.style.webkitUserSelect="none";
       })();/*ENDLIVE*/
       app.appendChild(wc);
@@ -396,6 +400,9 @@ button:focus-visible{outline:6px solid var(--sun);outline-offset:3px}
       var r=el("div","row");
       var ls=el("button","small say",L.listen);ls.type="button";
       ls.onclick=function(){say(txt,true)};
+      /*LIVE*/var hm=el("button","small",L.home);hm.type="button";
+      hm.onclick=function(){st.err=null;st.chosen={};st.step="start";render()};
+      r.appendChild(hm);/*ENDLIVE*/
       r.appendChild(ls);app.appendChild(r);
     }
     else if(st.step==="sky"){
